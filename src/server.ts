@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import prisma from './configs/db'; //db connection
 import userRoutes from './routes/user-routes';
 import projectRoutes from './routes/project-routes';
+import taskRoutes from './routes/task-routes';
 
 
 
@@ -20,6 +21,7 @@ app.use(express.json());
 // Routes
 app.use('/api/users',userRoutes);
 app.use('/api/projects',projectRoutes);
+app.use('/api/tasks',taskRoutes);
 
 
 app.get('/',async(req:Request,res:Response)=>{
