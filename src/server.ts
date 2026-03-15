@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import dotenv from 'dotenv';
 import prisma from './configs/db'; //db connection
 import userRoutes from './routes/user-routes';
+import projectRoutes from './routes/project-routes';
 
 
 
@@ -18,6 +19,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/users',userRoutes);
+app.use('/api/projects',projectRoutes);
 
 
 app.get('/',async(req:Request,res:Response)=>{
