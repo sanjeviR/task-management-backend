@@ -56,3 +56,41 @@ export const createTask = async (req:AuthRequest,res:Response):Promise<void> =>{
         res.status(500).json({message:"Failed to create task"});
     }
 };
+
+export const updateTask = async (req:AuthRequest, res:Response):Promise<void> =>{
+    //take the task id
+    try{
+    if (!req.params.id || typeof req.params.id !== 'string') {
+             res.status(400).json({ message: "Invalid task ID" });
+             return;
+        }
+
+        const taskId = parseInt(req.params.id);
+        const {title, description, priority, status, due_date, assigned_to, attachments} = req.body;
+        const updaterId = req.user!.id;
+        const existingTask = await prisma.task.findUnique({where:{id:taskId}});
+        if(!existingTask){
+            res.status(404).json({message:"Task not found"});
+            return;
+        }
+        const updatedTask = await prisma.task.update({
+            where:{id:taskId},
+            data:{
+                title,
+                description,
+                priority,
+                status,
+                ...(due_date && {due_date:new Date(due_date)}),
+                assigned_to,
+                attachments,
+               
+                updated_by :updaterId
+            }
+        });
+        res.status(200).json({message:"Task updated successfully!",task:updateTask})
+
+}catch(error:any){
+    console.error("Error updation task:",error);
+    res.status(500).json({message:"Failed to update task"});
+}
+};
