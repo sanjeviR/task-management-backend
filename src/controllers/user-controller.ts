@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken'
 import {Request,Response} from 'express';
 import prisma from '../configs/db';
 import bcrypt from 'bcrypt'
+import { AuthRequest } from '../middlewares/auth-middleware';
 
 
 //get all user
@@ -24,9 +25,10 @@ export const getAllUser = async (req:Request,res:Response)=>{
 };
 
 //create user
-export const createUser = async (req:Request,res:Response):Promise<void>=>{
+export const createUser = async (req:AuthRequest,res:Response):Promise<void>=>{
     try{
         const {name, email, password,role} = req.body;
+        const adminId = req.user!.id;
 
         //encrypt password
         const salt = await bcrypt.genSalt(10);
@@ -39,6 +41,7 @@ export const createUser = async (req:Request,res:Response):Promise<void>=>{
                 email,
                 password:hashedPassword,
                 role,
+                created_by:adminId
             },
             select:{
                 id:true,
@@ -46,6 +49,7 @@ export const createUser = async (req:Request,res:Response):Promise<void>=>{
                 email:true,
                 role:true,
                 created_at:true,
+                created_by:true
             }
         });
         res.status(201).json({message:'User created successfully!',user:newUser})
