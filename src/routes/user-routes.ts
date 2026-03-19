@@ -9,7 +9,7 @@ const router = Router();
 router.get('/',verifyToken,authorizedRoles('ADMIN'),getAllUser);
 
 // /api/create creates new user
-router.post('/',validateRequest(createUserSchema),createUser)
+router.post('/',verifyToken,authorizedRoles('ADMIN'),validateRequest(createUserSchema),createUser);
 
 //login route /login
 router.post('/login',loginUser)
