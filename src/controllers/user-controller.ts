@@ -9,6 +9,7 @@ import { AuthRequest } from '../middlewares/auth-middleware';
 export const getAllUser = async (req:Request,res:Response)=>{
     try{
         const users = await prisma.user.findMany({
+            //select fields only required
             select:{
                 id:true,
                 name:true,

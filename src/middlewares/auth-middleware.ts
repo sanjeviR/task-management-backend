@@ -23,6 +23,7 @@ export const verifyToken = (req:AuthRequest, res:Response,next:NextFunction):voi
     }
 
     try{
+        //recreate signature and compare signatures
         const decode = jwt.verify(token, process.env.JWT_SECRET as string) as unknown as{id:number;role:string};
         req.user = decode;
         next();
@@ -34,9 +35,9 @@ export const verifyToken = (req:AuthRequest, res:Response,next:NextFunction):voi
 
 
 //check if the user has the right role
-export const authorizedRoles = (...allowedRoles:string[])=>{
+export const authorizedRoles = (...allowedRoles:string[])=>{ //stores in a array
     return(req:AuthRequest,res:Response,next:NextFunction):void=>{
-        //check if the user os exist on the request
+        //check if the user is exist on the request
         if(!req.user){
             res.status(401).json({message:"Unauthorized. Please Login first."});
             return;

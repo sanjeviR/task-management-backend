@@ -87,7 +87,7 @@ export const updateTask = async (req:AuthRequest, res:Response):Promise<void> =>
                 updated_by :updaterId
             }
         });
-        res.status(200).json({message:"Task updated successfully!",task:updateTask})
+        res.status(200).json({message:"Task updated successfully!",task:updatedTask})
 
 }catch(error:any){
     console.error("Error updation task:",error);

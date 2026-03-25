@@ -10,16 +10,18 @@ export const getDashboardStats = async (
     const userRole = req.user!.role.toUpperCase();
     const userId = req.user!.id;
 
-    //manager list
+
+    //ADMIN DASHBOARD
+    if (userRole === "ADMIN") {
+      const projectCount = await prisma.project.count();
+      const taskCount = await prisma.task.count();
+
+          //manager list
     const managersRaw = await prisma.user.findMany({
       where: { role: "MANAGER" },
       select: { id: true, name: true },
     });
     const managersData = managersRaw.map((m) => ({ id: m.id, name: m.name }));
-    //ADMIN DASHBOARD
-    if (userRole === "ADMIN") {
-      const projectCount = await prisma.project.count();
-      const taskCount = await prisma.task.count();
 
       //fetch all user
       const allUser = await prisma.user.findMany({
@@ -83,6 +85,13 @@ export const getDashboardStats = async (
       const taskCount = await prisma.task.count({
         where: { project: { manager_id: userId } },
       });
+
+          //manager list
+    const managersRaw = await prisma.user.findMany({
+      where: { role: "MANAGER" },
+      select: { id: true, name: true },
+    });
+    const managersData = managersRaw.map((m) => ({ id: m.id, name: m.name }));
 
       const projectsData = await prisma.project.findMany({
         where: { manager_id: userId },
@@ -151,14 +160,18 @@ export const getDashboardStats = async (
       select: {
         id: true,
         title: true,
-        manager: { select: { name: true } },
+        manager: { select: {id: true, name: true } },
         tasks: {
           where: { assigned_to: userId },
           select: { status: true },
         },
       },
     });
+    const uniqueManagers = new Map();
     const projectWithTaskStatus = projectsData.map((project) => {
+      if(project.manager){
+        uniqueManagers.set(project.manager.id,{id:project.manager.id,name:project.manager.name});
+      }
       let to_do = 0,
         in_progress = 0,
         done = 0;
@@ -179,6 +192,8 @@ export const getDashboardStats = async (
         },
       };
     });
+    //convert map to array
+    const managersData = Array.from(uniqueManagers.values());
     res.status(200).json({
       userRole: "user",
       taskCount,
