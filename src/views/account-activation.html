@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body
+    style="
+      font-family: sans-serif, Arial;
+      background-color: rgb(252, 238, 238);
+      padding: 30px;
+      margin: 0;
+    "
+  >
+    <div
+      style="
+        background-color: white;
+        padding: 40px;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        max-width: 600px;
+        margin: 0 auto;
+      "
+    >
+      <h1 style="color: #464545; margin-top: 0">Welcome aboard, {{NAME}}!</h1>
+
+      <p style="color: #555; line-height: 1.6">
+        Your account has been successfully created.
+      </p>
+
+      <p style="color: #555; line-height: 1.6">
+        Click the button below to set your password and activate your account!
+      </p>
+
+      <a
+        href="{{ACTIVATION_LINK}}"
+        style="
+          background-color: #5ba45d;
+          color: white;
+          padding: 12px 25px;
+          text-decoration: none;
+          border-radius: 5px;
+          font-weight: bold;
+          display: inline-block;
+          margin-top: 20px;
+        "
+        >Activate</a
+      >
+    </div>
+  </body>
+</html>

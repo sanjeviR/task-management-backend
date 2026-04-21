@@ -7,7 +7,7 @@ import userRoutes from './routes/user-routes';
 import projectRoutes from './routes/project-routes';
 import taskRoutes from './routes/task-routes';
 import dashboardRoutes from './routes/dashboard-routes';
-
+import './workers/email-worker'
 
 
 dotenv.config();
